@@ -33,9 +33,7 @@ public class ProductEntity {
 
     public ProductEntity() {}
 
-    public ProductEntity(Long id, String name, String description,
-                         Double price, Integer stockQuantity,
-                         String category) {
+    public ProductEntity(Long id, String name, String description, Double price, Integer stockQuantity, String category) {
         this.id = id;
         this.name = name;
         this.description = description;
