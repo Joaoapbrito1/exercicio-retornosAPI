@@ -1,5 +1,6 @@
 package com.example.retornosAPI.services;
 
+import com.example.retornosAPI.dto.ProductDTO;
 import com.example.retornosAPI.models.Product;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
@@ -52,23 +53,21 @@ public class ProductService {
         }
         repository.deleteById(id);
     }
+    public Product updateProduct(Long id, ProductDTO productDTO) {
+        validateCategory(productDTO.category());
 
-    // Atualizar um produto existente
-    public Product updateProduct(Long id, Product updatedProduct) {
-        // Verificar se o produto existe
         ProductEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
 
-        // Atualizar os dados do produto
-        existingEntity.setName(updatedProduct.name());
-        existingEntity.setPrice(updatedProduct.price());
+        existingEntity.setName(productDTO.name());
+        existingEntity.setDescription(productDTO.description());
+        existingEntity.setPrice(productDTO.price());
+        existingEntity.setStockQuantity(productDTO.stockQuantity());
+        existingEntity.setCategory(productDTO.category());
 
-        // Salvar as alterações no banco de dados
-        ProductEntity savedEntity = repository.save(existingEntity);
-
-        // Retornar o produto atualizado
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return mapToProduct(repository.save(existingEntity));
     }
+
 
     // Buscar produtos pelo nome
     public List<Product> getProductsByName(String name) {
