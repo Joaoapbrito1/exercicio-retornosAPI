@@ -19,10 +19,19 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product createProduct(Product product) {
-        ProductEntity entity = new ProductEntity(null, product.name(), product.price());
-        ProductEntity savedEntity = repository.save(entity);
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+    public Product createProduct(Product productDTO) {
+        validateCategory(productDTO.category());
+
+        ProductEntity entity = new ProductEntity(
+                null,
+                productDTO.name(),
+                productDTO.description(),
+                productDTO.price(),
+                productDTO.stockQuantity(),
+                productDTO.category()
+        );
+
+        return mapToProduct(repository.save(entity));
     }
 
     public Product getProductById(Long id) {
