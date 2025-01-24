@@ -42,7 +42,7 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return repository.findAll().stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(this::mapToProduct)
                 .collect(Collectors.toList());
     }
 
