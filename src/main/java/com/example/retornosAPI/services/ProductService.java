@@ -79,4 +79,14 @@ public class ProductService {
             throw new IllegalArgumentException("A categoria deve ser válida: Eletrônicos, Roupas, Alimentos.");
         }
     }
+    private Product mapToProduct(ProductEntity entity) {
+        return new Product(
+                entity.getId(),
+                entity.getName(),
+                entity.getDescription(),
+                entity.getPrice(),
+                entity.getStockQuantity(),
+                entity.getCategory()
+        );
+    }
 }
