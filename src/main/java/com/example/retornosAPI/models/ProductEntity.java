@@ -12,25 +12,11 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "O nome do produto é obrigatório.")
-    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
     private String name;
-
-    @Size(max = 500, message = "A descrição pode ter no máximo 500 caracteres.")
     private String description;
-
-    @NotNull(message = "O preço é obrigatório.")
-    @Positive(message = "O preço deve ser maior que 0.")
     private Double price;
-
-    @NotNull(message = "A quantidade em estoque é obrigatória.")
-    @Min(value = 0, message = "A quantidade em estoque deve ser maior ou igual a 0.")
     private Integer stockQuantity;
-
-    @NotBlank(message = "A categoria é obrigatória.")
     private String category;
-
     public ProductEntity() {}
 
     public ProductEntity(Long id, String name, String description, Double price, Integer stockQuantity, String category) {
