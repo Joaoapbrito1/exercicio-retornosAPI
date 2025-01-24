@@ -1,5 +1,6 @@
 package com.example.retornosAPI.controllers;
 
+import com.example.retornosAPI.dto.ProductDTO;
 import com.example.retornosAPI.models.Product;
 import com.example.retornosAPI.services.ProductService;
 import jakarta.validation.Valid;
@@ -31,6 +32,11 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(service.getAllProducts());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(service.updateProduct(id, productDTO));
     }
 
     @DeleteMapping("/{id}")
