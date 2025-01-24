@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
+    private static final List<String> VALID_CATEGORIES = List.of("Eletrônicos", "Roupas", "Alimentos");
     private final ProductRepository repository;
 
     public ProductService(ProductRepository repository) {
@@ -72,5 +73,10 @@ public class ProductService {
         return entities.stream()
                 .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
                 .collect(Collectors.toList());
+    }
+    private void validateCategory(String category) {
+        if (!VALID_CATEGORIES.contains(category)) {
+            throw new IllegalArgumentException("A categoria deve ser válida: Eletrônicos, Roupas, Alimentos.");
+        }
     }
 }
