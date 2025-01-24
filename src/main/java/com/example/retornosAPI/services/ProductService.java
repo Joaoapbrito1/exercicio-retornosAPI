@@ -47,6 +47,9 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Product not found for deletion.");
+        }
         repository.deleteById(id);
     }
 
