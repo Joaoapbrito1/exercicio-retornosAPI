@@ -7,13 +7,12 @@ import com.example.retornosAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
-    private static final List<String> VALID_CATEGORIES = List.of("Eletrônicos", "Roupas", "Alimentos");
+    private static final List<String> VALID_CATEGORIES = List.of("Electronics", "Clothes", "Food");
     private final ProductRepository repository;
 
     public ProductService(ProductRepository repository) {
@@ -57,7 +56,7 @@ public class ProductService {
         validateCategory(productDTO.category());
 
         ProductEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+                .orElseThrow(() -> new RuntimeException("Product not found."));
 
         existingEntity.setName(productDTO.name());
         existingEntity.setDescription(productDTO.description());
@@ -67,27 +66,15 @@ public class ProductService {
 
         return mapToProduct(repository.save(existingEntity));
     }
-
-
-    // Buscar produtos pelo nome
     public List<Product> getProductsByName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
-        }
-
         List<ProductEntity> entities = repository.findByNameContainingIgnoreCase(name);
-        if (entities.isEmpty()) {
-            System.out.println("Nenhum produto encontrado com o nome: " + name);
-        } else {
-            System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
-        }
         return entities.stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(this::mapToProduct)
                 .collect(Collectors.toList());
     }
     private void validateCategory(String category) {
         if (!VALID_CATEGORIES.contains(category)) {
-            throw new IllegalArgumentException("A categoria deve ser válida: Eletrônicos, Roupas, Alimentos.");
+            throw new IllegalArgumentException("The category must be valid: Electronics, Clothing, Food.");
         }
     }
     private Product mapToProduct(ProductEntity entity) {
